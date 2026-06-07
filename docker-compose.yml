@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: tradepulse
+      POSTGRES_PASSWORD: tradepulse
+      POSTGRES_DB: tradepulse
+    ports:
+      - "5432:5432"
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://tradepulse:tradepulse@postgres:5432/tradepulse?sslmode=disable
+      JWT_SECRET: secret
+      PORT: 8080
+    depends_on:
+      - postgres
